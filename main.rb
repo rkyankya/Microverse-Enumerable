@@ -1,11 +1,11 @@
 module Enumerable
- def my_each
+  def my_each
     return to_enum unless block_given?
 
     (0..length - 1).each do |i|
       yield(self[i])
     end
-  end
+   end
 
   def my_map(&proc)
     temp = []
