@@ -1,11 +1,13 @@
-module Enumerable
+# frozen_string_literal: true
+
+module Enumerable # rubocop:disable Metrics/ModuleLength
   def my_each
     return to_enum unless block_given?
 
     (0..length - 1).each do |i|
       yield(self[i])
     end
-   end
+  end
 
   def my_map(&proc)
     temp = []
@@ -176,3 +178,4 @@ end
 # puts Foo.is_a? Class
 #
 # puts /yey/.is_a? Regexp
+#
