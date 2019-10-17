@@ -1,4 +1,4 @@
-AllCops:
+ AllCops:
   Exclude:
     - "bin/*"
     - "db/**/*"
@@ -7,28 +7,14 @@ AllCops:
     - "Rakefile"
   DisplayCopNames: true
 
-Metrics/ModuleLength:
-  Enabled: false
-
-Metrics/BlockNesting:
-  Enabled: false
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
-Metrics/PerceivedComplexity:
-  Enabled: false
-
-Style:
-  Enabled: false
-
 Metrics/LineLength:
   Max: 120
 Metrics/MethodLength:
   Include: ["app/controllers/*"]
   Max: 20
 Metrics/AbcSize:
-  Enabled: false
+  Include: ["app/controllers/*"]
+  Max: 30
 Metrics/ClassLength:
   Max: 150
 Metrics/BlockLength:
