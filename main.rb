@@ -1,4 +1,7 @@
-module Enumerable
+# frozen_string_literal: true
+# rubocop:disable Metrics/ModuleLength
+
+module Enumerable 
   def my_each
     return to_enum unless block_given?
 
@@ -9,9 +12,9 @@ module Enumerable
 
   def my_map(&proc)
     temp = []
-    (0..length - 1).each do |i|
-      temp << [proc.call(self[i])] if proc
-      temp << yield(self[i]) if block_given? && !proc
+    each do |item|
+      temp.push(proc.call(item)) if proc
+      temp.push(yield(item)) if block_given? && !proc
     end
     temp = to_enum if temp.empty?
     temp
@@ -85,10 +88,16 @@ module Enumerable
   end
 
   def check(status, param, negative = false)
-    if negative
-      each { |item| return status unless item == param || item }
-    else
-      each { |item| return status if item == param || item }
+    each do |item|
+      cond = if param == true
+               !item.nil? && item
+             else
+               item == param
+             end
+
+      cond = negative ? !cond : cond
+
+      return status if cond
     end
   end
 
@@ -102,13 +111,13 @@ module Enumerable
 
   def my_inject(*args)
     acc = setup_acc(args)
-    return multiply_els(self) if args.include? :*
+    return multiply_els(self, acc) if args.include? :*
 
-    return add_els(self) if args.include? :+
+    return add_els(self, acc) if args.include? :+
 
-    return divide_els(self) if args.include? :/
+    return divide_els(self, acc) if args.include? :/
 
-    return subs_els(self) if args.include? :-
+    return subs_els(self, acc) if args.include? :-
 
     each { |item| acc = yield(acc, item) }
     acc
@@ -117,26 +126,27 @@ module Enumerable
   def setup_acc(param)
     if !param[0].is_a?(Symbol) && !param.empty?
       param[0]
+    elsif param.my_all?(String) && param[0].is_a?(String) then param[0]
     elsif param.my_all?(String) then ''
     else 0
     end
   end
 
-  def multiply_els(arr)
-    arr.my_inject(1) { |acc, item| acc * item }
+  def multiply_els(arr, accum)
+    accum = accum.zero? ? 1 : accum
+    arr.my_inject(accum) { |acc, item| acc * item }
   end
 
-  def add_els(arr)
-    accum = arr.my_all?(String) ? '' : 0
+  def add_els(arr, accum)
     arr.my_inject(accum) { |acc, item| acc + item }
   end
 
-  def divide_els(arr)
-    arr.my_inject(1.0) { |acc, item| acc / item }
+  def divide_els(arr, accum)
+    arr.my_inject(accum.to_f) { |acc, item| acc / item }
   end
 
-  def subs_els(arr)
-    arr.my_inject(0) { |acc, item| acc - item }
+  def subs_els(arr, accum)
+    arr.my_inject(accum) { |acc, item| acc - item }
   end
 end
 
@@ -149,7 +159,7 @@ end
 
 # puts([1, 2, 2].my_count(1))
 
-# puts multiply_els([3, 2, 3])
+# puts multiply_els([3, 2, 3]) FAULTY
 
 # p ['s', 'tri', 'ng'].my_inject {|acc, item| acc+item}
 
@@ -158,9 +168,6 @@ end
 
 # puts [1,2,nil].my_all?
 
-# mr = proc { |item| item + 2 }
-
-# puts([1, 2, 3].my_map(&mr))
 # puts([1, 2, 3].my_map { |item| item + 2 })
 
 # [1,2,3,4].my_each_with_index{ |item, index| puts index}
@@ -169,10 +176,6 @@ end
 
 # puts [3,2,3].my_inject(2) { |acc, item| acc+item}
 
-# class Foo
-#
-# end
-#
 # puts Foo.is_a? Class
-#
+
 # puts /yey/.is_a? Regexp
