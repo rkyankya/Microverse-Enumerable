@@ -159,8 +159,6 @@ end
 
 # puts([1, 2, 2].my_count(1))
 
-# puts multiply_els([3, 2, 3]) FAULTY
-
 # p ['s', 'tri', 'ng'].my_inject {|acc, item| acc+item}
 
 # puts Range.new(5,20).inject(:+)
@@ -173,10 +171,4 @@ end
 # [1,2,3,4].my_each_with_index{ |item, index| puts index}
 # puts [1,2,3,4].my_select{ |item| item.even?}
 # [1,2,3].my_each { |item| puts item }
-
 # puts [3,2,3].my_inject(2) { |acc, item| acc+item}
-
-# puts Foo.is_a? Class
-
-# puts /yey/.is_a? Regexp
-#
