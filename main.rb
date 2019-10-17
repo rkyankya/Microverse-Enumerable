@@ -179,3 +179,4 @@ end
 # puts Foo.is_a? Class
 
 # puts /yey/.is_a? Regexp
+#
