@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Enumerable
+module Enumerable # rubocop:disable Metrics/ModuleLength
   def my_each
     return to_enum unless block_given?
 
@@ -125,8 +125,8 @@ module Enumerable
   def setup_acc(param)
     if !param[0].is_a?(Symbol) && !param.empty?
       param[0]
-    elsif param.my_all?(String) && param[0].is_a?(String) then param[0]
-    elsif param.my_all?(String) then ''
+    elsif param[0].is_a?(String) then param[0]
+    elsif my_all?(String) then ''
     else 0
     end
   end
@@ -148,26 +148,3 @@ module Enumerable
     arr.my_inject(accum) { |acc, item| acc - item }
   end
 end
-
-# puts [1,2,3].my_all?{ |item| item<5}
-# puts %w[s str string].my_none?(/g/)
-# puts [1,2,3].my_none?{ |item| item<0}
-# puts [false, false, false].my_none?
-
-# puts [1,2,2].my_map { |item| item+2}
-
-# puts([1, 2, 2].my_count(1))
-
-# p ['s', 'tri', 'ng'].my_inject {|acc, item| acc+item}
-
-# puts Range.new(5,20).inject(:+)
-# puts ['s', 'tri', 'ng'].my_inject( &proc { |memo, word| memo.length > word.length ? memo : word })
-
-# puts [1,2,nil].my_all?
-
-# puts([1, 2, 3].my_map { |item| item + 2 })
-
-# [1,2,3,4].my_each_with_index{ |item, index| puts index}
-# puts [1,2,3,4].my_select{ |item| item.even?}
-# [1,2,3].my_each { |item| puts item }
-# puts [3,2,3].my_inject(2) { |acc, item| acc+item}
