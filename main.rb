@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Enumerable
   def my_each
     return self unless block_given?
@@ -96,7 +98,6 @@ module Enumerable
 
     return subs_els(self) if args.include? :-
 
-
     each do |item|
       acc = yield(acc, item)
     end
@@ -119,8 +120,6 @@ module Enumerable
     arr.my_inject(0) { |acc, item| acc - item }
   end
 end
-
-
 
 # puts [1,2,3].my_all?{ |item| item<0}
 # puts %w[s str string].my_any?(/c/)
